@@ -1,6 +1,9 @@
 use std::fmt;
+use std::thread;
 
-pub struct ThreadPool;
+pub struct ThreadPool{
+    threads: Vec<thread::JoinHandle<()>>,
+}
 
 impl ThreadPool {
     /// Creates a new ThreadPool.
@@ -15,7 +18,13 @@ impl ThreadPool {
             return Err(PoolCreationError);
         }
 
-        Ok(ThreadPool)
+        let mut threads = Vec::with_capacity(size);
+
+        for _ in 0..size {
+            // create some threads and store them in the vector
+        }
+
+        Ok(ThreadPool { threads })
     }
 
     pub fn execute<F>(&self, f: F)
