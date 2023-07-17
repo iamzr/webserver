@@ -2,7 +2,7 @@ use std::fmt;
 use std::thread;
 
 pub struct ThreadPool{
-    threads: Vec<thread::JoinHandle<()>>,
+    workers: Vec<Worker>,
 }
 
 impl ThreadPool {
@@ -18,13 +18,13 @@ impl ThreadPool {
             return Err(PoolCreationError);
         }
 
-        let mut threads = Vec::with_capacity(size);
+        let mut workers = Vec::with_capacity(size);
 
-        for _ in 0..size {
-            // create some threads and store them in the vector
+        for id in 0..size {
+            workers.push(Worker::new(id));
         }
 
-        Ok(ThreadPool { threads })
+        Ok(ThreadPool { workers })
     }
 
     pub fn execute<F>(&self, f: F)
@@ -41,5 +41,18 @@ pub struct PoolCreationError;
 impl fmt::Display for PoolCreationError {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         write!(f, "Unable to create thread pool.")
+    }
+}
+
+struct Worker {
+    id: usize,
+    thread: thread::JoinHandle<()>,
+}
+
+impl Worker {
+    fn new(id: usize) -> Worker {
+        let thread = thread::spawn(|| {});
+
+        Worker { id, thread }
     }
 }
