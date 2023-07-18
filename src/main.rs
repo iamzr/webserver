@@ -22,6 +22,15 @@ fn main() {
     println!("Shutting down.")
 }
 
+/// Handles incoming tream and 
+///
+/// # Panics
+///
+/// Panics if unable to parse request stream.
+/// 
+/// Panics if unable to find the requested file.
+/// 
+/// Panics if unable to write to the stream
 fn handle_connection(mut stream: TcpStream) {
     let buf_reader = BufReader::new(&mut stream);
 
